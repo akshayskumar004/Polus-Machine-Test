@@ -1,0 +1,34 @@
+<form class="form-container" [formGroup]="formGroup" (ngSubmit)="submitForm()">
+  <ng-container *ngFor="let field of schema">
+    <mat-form-field
+      *ngIf="field.type !== 'checkbox'"
+      appearance="fill"
+      class="w-100"
+    >
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [type]="field.type" [formControlName]="field.name" />
+      <mat-error *ngIf="formGroup.get(field.name)?.hasError('required')">
+        {{ field.label }} is required
+      </mat-error>
+      <mat-error *ngIf="formGroup.get(field.name)?.hasError('email')">
+        Invalid email
+      </mat-error>
+    </mat-form-field>
+
+    <mat-checkbox
+      *ngIf="field.type === 'checkbox'"
+      [formControlName]="field.name"
+    >
+      {{ field.label }}
+    </mat-checkbox>
+  </ng-container>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="formGroup.invalid"
+  >
+    Submit
+  </button>
+</form>
